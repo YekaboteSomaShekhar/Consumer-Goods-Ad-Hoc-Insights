@@ -17,3 +17,8 @@ The management at AtliQ Hardware identified a gap in obtaining actionable busine
 ✅ Problem-Solving Skills – Handling complex queries and interpreting data-driven patterns.
 
 ✅ Data-Driven Decision Making – Understanding how insights impact business strategies.
+
+## Tools I have used
+
+* SQL - To write queries
+* Power BI - For visualizations
