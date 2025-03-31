@@ -11,6 +11,9 @@ The management at AtliQ Hardware identified a gap in obtaining actionable busine
 ## 🛠 Objective
 
 ✅ SQL Proficiency – Writing optimized and efficient queries to manipulate and analyze data.
+
 ✅ Business Insight Generation – Translating raw data into actionable insights for decision-making.
+
 ✅ Problem-Solving Skills – Handling complex queries and interpreting data-driven patterns.
+
 ✅ Data-Driven Decision Making – Understanding how insights impact business strategies.
