@@ -18,17 +18,17 @@ The management at AtliQ Hardware identified a gap in obtaining actionable busine
 
 ✅ Data-Driven Decision Making – Understanding how insights impact business strategies.
 
-## Tools I have used
+## 🛠 Tools I have used
 
 * SQL - To write queries and analyzing the data
 * Power BI - For visualizations
 * Canva - For creating the presentation
 
-## Insights Generation
+## 🔍 Insights Generation
 
-1️⃣ Market Presence – AtliQ Exclusive operates in 8 APAC markets, including India, Japan, and Australia.
+1️⃣ Market Presence – AtliQ Exclusive operates in 8 APAC markets, including India, Japan, Australia, and South Korea, indicating a strong regional footprint.
 
-2️⃣ Product Growth – Unique products grew by 36.33%, from 245 (2020) to 334 (2021), with 89 new additions.
+2️⃣ Product Growth – Unique products grew by 36.33%, from 245 (2020) to 334 (2021), with 89 new product additions.
 
 3️⃣ Top Segments – Notebook (129) leads in unique products, followed by Accessories (116) and Peripherals (84), while Networking (9) lags.
 
@@ -42,12 +42,12 @@ The management at AtliQ Hardware identified a gap in obtaining actionable busine
 
 8️⃣ Retail Dominance – Retailers contributed 73.23% of gross sales, while Direct (15.47%) and Distributors (11.30%) had lower shares.
 
-9️⃣ Best-Selling Products –
+9️⃣  Best-Selling Products by Division –
 
-Storage: "AQ Pen Drive 2 IN 1" (701.4K units) leads.
+Storage Devices: "AQ Pen Drive 2 IN 1" led with 701.4K units sold, showing high demand.
 
-Gaming: "AQ Gamers Ms" (428.5K units) dominates.
+Gaming Accessories: "AQ Gamers Ms" topped with 428.5K units, reflecting strong gaming market growth.
 
-Low Demand: "AQ Digit" & "AQ Velocity" (~17.3K units) struggle.
+Low-Selling Products: "AQ Digit" and "AQ Velocity" had the lowest sales (~17.3K units each), suggesting limited demand.
 
 📊 These insights guide inventory management, pricing, and sales strategies for AtliQ Exclusive.
