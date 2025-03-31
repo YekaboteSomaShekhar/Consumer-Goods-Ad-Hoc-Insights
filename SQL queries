@@ -1,0 +1,158 @@
+                                     SQL Ad-Hoc Requests
+
+Request 1:
+
+SELECT DISTINCT(market) FROM dim_customer
+WHERE customer = "Atliq Exclusive" AND region = "APAC";
+
+Request 2:
+
+WITH Unique_Products AS (
+	SELECT
+      COUNT(DISTINCT CASE WHEN fiscal_year = 2020 THEN product_code END) AS unique_products_2020,
+      COUNT(DISTINCT CASE WHEN fiscal_year = 2021 THEN product_code END) AS unique_products_2021
+	FROM fact_sales_monthly
+)
+SELECT
+     unique_products_2020,
+     unique_products_2021,
+     round(((unique_products_2021 - unique_products_2020) * 100 / NULLIF(unique_products_2020, 0)), 2) AS percentage_chg
+FROM Unique_Products;
+
+Request 3:
+
+SELECT 
+    segment,
+    COUNT(DISTINCT(product_code)) AS product_count
+FROM dim_product
+GROUP BY segment
+ORDER BY product_count DESC;
+
+Request 4:
+
+WITH Unique_Products_by_Segment AS (
+      SELECT
+         p.segment,
+         COUNT(DISTINCT CASE WHEN fiscal_year = 2020 THEN s.product_code END) AS product_count_2020,
+         COUNT(DISTINCT CASE WHEN fiscal_year = 2021 THEN s.product_code END) AS product_count_2021
+	  FROM fact_sales_monthly s
+      JOIN dim_product p
+      ON p.product_code = s.product_code
+      GROUP BY p.segment
+)
+SELECT
+      segment,
+      product_count_2020,
+      product_count_2021,
+      ABS(product_count_2021 - product_count_2020) AS difference
+FROM Unique_Products_by_Segment
+ORDER BY difference DESC;
+
+Request 5:
+
+SELECT 
+    p.product_code,
+    p.product,
+    m.manufacturing_cost
+FROM fact_manufacturing_cost m
+JOIN dim_product p
+    ON m.product_code = p.product_code
+WHERE m.manufacturing_cost IN (
+	  (SELECT MAX(manufacturing_cost) FROM fact_manufacturing_cost),
+      (SELECT MIN(manufacturing_cost) FROM fact_manufacturing_cost)
+);
+
+Request 6:
+
+SELECT
+	c.customer_code,
+    c.customer,
+	ROUND(AVG(i.pre_invoice_discount_pct * 100), 2) AS average_discount_percentage
+FROM fact_pre_invoice_deductions i
+JOIN dim_customer c
+    ON i.customer_code = c.customer_code
+WHERE i.fiscal_year = 2021 AND c.market = "India"
+GROUP BY c.customer_code, c.customer
+ORDER BY average_discount_percentage DESC
+LIMIT 5;
+
+Request 7:
+
+SELECT
+    DATE_FORMAT(s.date, '%M') AS month,
+    s.fiscal_year AS year,
+    CONCAT(ROUND(SUM(g.gross_price * s.sold_quantity) / 1000000, 2)) AS gross_sales_mln
+FROM fact_sales_monthly s
+JOIN dim_customer c
+   ON s.customer_code = c.customer_code
+JOIN fact_gross_price g
+   ON s.product_code = g.product_code AND g.fiscal_year = s.fiscal_year
+WHERE customer = "Atliq Exclusive"
+GROUP BY month, year
+ORDER BY year ASC;
+
+Request 8:
+
+WITH quarterly_sales AS (
+SELECT
+     CASE
+         WHEN month(s.date) IN (9, 10, 11) THEN 'Q1'
+         WHEN month(s.date) IN (12, 1, 2) THEN 'Q2'
+         WHEN month(s.date) IN (3, 4, 5) THEN 'Q3'
+         WHEN month(s.date) IN (6, 7, 8) THEN 'Q4'
+	 END AS quarter,
+     SUM(s.sold_quantity) AS total_sold_quantity
+FROM fact_sales_monthly s
+WHERE s.fiscal_year = 2020
+GROUP BY quarter
+)
+SELECT
+     quarter,
+     total_sold_quantity
+FROM quarterly_sales
+ORDER BY total_sold_quantity DESC;
+
+Request 9:
+
+WITH channel_sales AS (
+    SELECT
+        c.channel,
+        ROUND(SUM(s.sold_quantity * g.gross_price) / 1000000, 2) AS gross_sales_mln
+    FROM fact_sales_monthly s
+    JOIN dim_customer c 
+        ON s.customer_code = c.customer_code
+    JOIN fact_gross_price g 
+        ON s.product_code = g.product_code AND g.fiscal_year = s.fiscal_year
+    WHERE s.fiscal_year = 2021
+    GROUP BY c.channel
+)
+SELECT
+    channel,
+    gross_sales_mln,
+    ROUND((gross_sales_mln / SUM(gross_sales_mln) OVER()) * 100, 2) AS pct_contribution
+FROM channel_sales
+ORDER BY gross_sales_mln DESC;
+
+Request 10:
+
+WITH product_sales AS (
+    SELECT 
+        p.division,
+        s.product_code,
+        p.product,
+        SUM(s.sold_quantity) AS total_sold_quantity,
+        RANK() OVER (PARTITION BY p.division ORDER BY SUM(s.sold_quantity) DESC) AS rank_order
+    FROM fact_sales_monthly s
+        JOIN dim_product p ON s.product_code = p.product_code
+	WHERE s.fiscal_year = 2021
+    GROUP BY p.division, s.product_code, p.product
+)
+SELECT 
+    division, 
+    product_code, 
+    product, 
+    total_sold_quantity, 
+    rank_order
+FROM product_sales
+WHERE rank_order <= 3
+ORDER BY division, rank_order;
