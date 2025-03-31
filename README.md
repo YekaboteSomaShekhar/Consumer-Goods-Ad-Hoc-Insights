@@ -20,9 +20,9 @@ The management at AtliQ Hardware identified a gap in obtaining actionable busine
 
 ## 🛠 Tools I have used
 
-* SQL - To write queries and analyzing the data
-* Power BI - For visualizations
-* Canva - For creating the presentation
+* **SQL** - To write queries and analyzing the data
+* **Power BI** - For visualizations
+* **Canva** - For creating the presentation
 
 ## 🔍 Insights Generation
 
